@@ -20,4 +20,4 @@ All config files are stored in the `config` directory. These can be used to twea
 If you wish to contribute to the bot's development, please fork the repository and submit a PR with your changes. If you've made any changes to the code itself then please feel free to add a preferred name + socials into the `config/contributors.json` file.
 
 ## Future Upgrades
- - [] Multi-language support
+ - [ ] Multi-language support
