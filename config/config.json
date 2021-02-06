@@ -1,0 +1,26 @@
+{
+	"prefix" : "!",
+	"status" : "DM me to register!",
+	"cogs":[
+		"cogs.misc",
+		"cogs.verify",
+		"cogs.contributors"
+	],
+	"db":{
+		"path":"records/DATE-gameathon.sqlite",
+		"tableName":"users",
+		"dbUserRows":{
+			"discordID":"TEXT PRIMARY KEY",
+			"thmUser":"TEXT UNIQUE",
+			"thmToken":"TEXT UNIQUE",
+			"thmPoints":"INT",
+			"htbToken":"TEXT UNIQUE",
+			"htbPoints":"INT",
+			"points":"INT DEFAULT 0"
+		}
+	},
+	"github":"https://github.com/muirlandoracle/bot",
+	"hiddenCommands":[
+		"ping"
+	]
+}
