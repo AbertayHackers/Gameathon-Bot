@@ -21,24 +21,34 @@ class Misc(commands.Cog):
 
 
 		@bot.command(name="help", description=formatHelp("help", "desc"), usage=formatHelp("help", "usage"))
-		async def help(ctx):
-			commands = []	
-			text = f"{strings['help']['title']}\n{strings['help']['overview']}\n"
-			for command in bot.commands:
-				tempCmd = []
-				if not command.name or command.name in config["hiddenCommands"]:
-					continue
-				tempCmd.append(command.name)
-				tempCmd.append(command.description) if command.description else tempCmd.append("No Description")
-				tempCmd.append(command.usage) if command.usage else tempCmd.append("No Usage Information")
-				commands.append(tempCmd)
-			text += f"```\n{tabulate(commands, ['Command', 'Description', 'Usage'], tablefmt='grid')}\n```"
-			
+		async def help(ctx, cmd = None):
+			embed = discord.Embed(colour=discord.Colour.blue())
+			if cmd != None:
+				if cmd not in config["hiddenCommands"]:
+					found = False
+					for command in bot.commands:
+						if cmd == command.name:
+							embed.title = f"**{command.name.capitalize()}**"
+							embed.description = f"__*Description:*__ ```{command.description}```\n__*Usage:*__ ```{command.usage}```"
+							found = True
+							break;
+					if not found:
+						await ctx.channel.send(strings["errors"]["commandNotFound"].format(cmd))
+						return		
+			else:
+				embed.title = "**Help**"
+				for command in bot.commands:
+					embed.add_field(
+						name=f"\n\n===================================================\n**__{command.name}__**\n",
+						value=f"__*Description:*__ ```{command.description}```\n__*Usage:*__ ```{command.usage}```",
+						inline=False
+					)
 			try:
-				await ctx.author.send(text)
+				await ctx.author.send(embed=embed)
 				await ctx.message.add_reaction('\U0001F44D')
 			except discord.errors.Forbidden:
 				await ctx.channel.send(strings["errors"]["botBlocked"].format(ctx.message.author.id))
 
+				
 def setup(bot):
 	bot.add_cog(Misc(bot))

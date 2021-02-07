@@ -12,6 +12,10 @@
 			"desc":"Link your TryHackMe account to the bot (DMs only!).\nUses your Discord token which can be found on your profile.",
 			"usage":"{}thmlink TOKEN"
 		},
+		"htblink":{
+			"desc":"Link your HackTheBox account to the bot (DMs only!).\nUses your Account Identifier which can be found in your settings menu.\nNote: You must have your profile set to public for this!",
+			"usage":"{}htblink IDENTIFIER"
+		},
 		"contributors":{
 			"desc":"Show a list of the bot's contributors",
 			"usage":"{}contributors"
@@ -30,7 +34,8 @@
 		"botBlocked":"I can't DM you <@{}>!\nPlease make sure you don't have me blocked, and that people can send messages to you from this server.",
 		"noToken":"You have not added your token after the command.",
 		"alreadyLinked":"You have already linked your account for this site",
-		"failedLink":"Something went wrong. Your account has not been linked"
+		"failedLink":"Something went wrong. Your account has not been linked",
+		"commandNotFound":"Command: `{}` not found"
 	},
 	"success":{
 		"linked":"Your account for this site is now linked!"

@@ -1,2 +1,2 @@
-tabulate
+bs4
 discord

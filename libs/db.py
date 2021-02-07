@@ -23,13 +23,14 @@ class DBHandle():
 		self.setup()
 	
 	def addTHMUser(self, discordID, user, points, token):
-		userHandle = self.getUser(discordID)
-		if userHandle["thmUser"] != None:
-			return False
 		cmd = "UPDATE users SET thmUser=?, thmPoints=?, thmToken=? WHERE discordID = ?"
 		self.curs.execute(cmd, (user, points, token, discordID))
 		self.conn.commit()
-		return True
+
+	def addHTBUser(self, discordID, user, ID, points, token):
+		cmd = "UPDATE users SET htbUser=?, htbID=?, htbPoints=?, htbToken=? WHERE discordID=?"
+		self.curs.execute(cmd, (user, ID, points, token, discordID))
+		self.conn.commit()
 
 	def setup(self):
 		colours.info(f"New Database {self.dbname}. Creating tables...")

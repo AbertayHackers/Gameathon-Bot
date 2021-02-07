@@ -14,12 +14,17 @@
 			"thmUser":"TEXT UNIQUE",
 			"thmToken":"TEXT UNIQUE",
 			"thmPoints":"INT",
+			"htbID":"TEXT UNIQUE",
+			"htbUser":"TEXT UNIQUE",
 			"htbToken":"TEXT UNIQUE",
 			"htbPoints":"INT",
 			"points":"INT DEFAULT 0"
 		}
 	},
-	"github":"https://github.com/muirlandoracle/bot",
+	"github":"https://github.com/MuirlandOracle/Gameathon-Bot",
+	"reqHeaders": {
+		"User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:85.0) Gecko/20100101 Firefox/85.0"
+	},
 	"hiddenCommands":[
 		"ping"
 	]

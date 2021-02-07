@@ -1,4 +1,5 @@
 import discord, requests, asyncio, re, json, os
+from bs4 import BeautifulSoup as bs4
 from discord.ext import commands
 from libs.loadconf import strings, endpoints, config
 from libs.format import formatHelp
@@ -11,17 +12,9 @@ class Verify(commands.Cog):
 
 		@bot.command(name="thmlink", description=formatHelp("thmlink", "desc"), usage=formatHelp("thmlink", "usage"))
 		async def thmlink(ctx, token = None):
-			if not await checkDM(ctx):
+			discordID, token = await preprocess(ctx, token)	
+			if not discordID:
 				return
-			elif not token:
-				await ctx.channel.send(strings["errors"]["noToken"])
-				return
-
-			#Get Discord ID
-			discordID = ctx.message.author.id
-
-			#Sanitise Token
-			token = stripToken(token)
 
 			#Get the user info
 			userHandle = self.db.getUser(discordID)
@@ -34,11 +27,39 @@ class Verify(commands.Cog):
 			username = json.loads(r.text)["username"]
 			r = requests.get(endpoints["thm"]["user"].format(username))
 			points = json.loads(r.text)["points"]
-			if(self.db.addTHMUser(discordID, username, points, token)):
-				await ctx.channel.send(strings["success"]["linked"])
-			else:
-				await ctx.channel.send(strings["errors"]["failedLink"])
+			self.db.addTHMUser(discordID, username, points, token)
+			await ctx.channel.send(strings["success"]["linked"])
+		
+		
+		@bot.command(name="htblink", description=formatHelp("htblink", "desc"), usage=formatHelp("htblink", "usage"))
+		async def htblink(ctx, token = None):
+			sess = requests.session()
+			sess.headers = config["reqHeaders"]
+			discordID, token = await preprocess(ctx, token)	
+			if not discordID:
+				return
+			
+			#Get user info
+			userHandle = self.db.getUser(discordID)
+			if userHandle["htbID"] != None:
+				await ctx.channel.send(strings["errors"]["alreadyLinked"])
+				return
 
+			#Verify the user
+			r = sess.get(endpoints["htb"]["verify"].format(token))
+			data = json.loads(r.text)
+			username = data["user_name"]
+			userid = data["user_id"]
+			#Get the points
+			r = sess.get(endpoints["htb"]["points"].format(userid))
+			soup = bs4(r.text, 'html.parser')
+			points = soup.find('span', {"title":"Points"}).get_text().strip()
+			self.db.addHTBUser(discordID, username, userid, points, token)
+			await ctx.channel.send(strings["success"]["linked"])
+
+
+
+		##Helper Funcs
 		def stripToken(token):
 			return re.sub("[\W_]", "", token)
 
@@ -50,6 +71,16 @@ class Verify(commands.Cog):
 				await res.delete()
 				return False
 			return True
+
+		async def preprocess(ctx, token):
+			if not await checkDM(ctx):
+				return False
+			elif not token:
+				await ctx.channel.send(strings["errors"]["noToken"])
+				return False
+			discordID = ctx.message.author.id
+			token = stripToken(token)
+			return discordID, token
 
 
 
