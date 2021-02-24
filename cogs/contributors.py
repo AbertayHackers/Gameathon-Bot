@@ -1,3 +1,10 @@
+"""
+Title:			Contributors
+Type:			Cog
+Purpose:		Shameless Self Promotion
+Author: 		AG | MuirlandOracle
+Last Updated:	24/02/21
+"""
 import discord
 from discord.ext import commands
 from libs.loadconf import config, strings, contributors as contributorList
@@ -7,6 +14,7 @@ class Contributors(commands.Cog):
 	def __init__(self, bot):
 		self.bot = bot
 
+		#Send the contributors list
 		@bot.command(name="contributors", description=formatHelp("contributors", "desc"), usage=formatHelp("contributors", "usage"))
 		async def contributors(ctx):
 			embed = discord.Embed(colour=discord.Colour.green())

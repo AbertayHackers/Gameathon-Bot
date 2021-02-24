@@ -1,0 +1,9 @@
+{
+	"initialise":"[Log Start][{}] Starting log...",
+	"end":"[Log End][{}] Ending Log...",
+	"linkAccount":"[Account][{}] Linking DiscordID {} to {} account: {} ({} points)",
+	"pointsUpdate":"[Points][{}] Set points for {} to {}",
+	"allPointsUpdate":"[Points][{}] Update all points called by {}",
+	"dbCreate":"[Database][{}] Database \"{}\" Created"
+
+}

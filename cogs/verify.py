@@ -1,17 +1,29 @@
+"""
+Title:			Verify
+Type:			Cog
+Purpose:		Handles user verification
+Author: 		AG | MuirlandOracle
+Last Updated:	24/02/21
+"""
 import discord, requests, asyncio, re, json, os
 from bs4 import BeautifulSoup as bs4
 from discord.ext import commands
 from libs.loadconf import strings, endpoints, config
 from libs.format import formatHelp
 from libs.db import DBHandle
+from libs.req import Api
 
 class Verify(commands.Cog):
 	def __init__(self, bot):
 		self.bot = bot
+		#Initialises instances of the DB and api auxiliary class
 		self.db = DBHandle()
+		self.api = Api()
 
+		#Link a THM account
 		@bot.command(name="thmlink", description=formatHelp("thmlink", "desc"), usage=formatHelp("thmlink", "usage"))
 		async def thmlink(ctx, token = None):
+			#Sort out the token to ensure that it's sanitised (and exists)
 			discordID, token = await preprocess(ctx, token)	
 			if not discordID:
 				return
@@ -22,19 +34,17 @@ class Verify(commands.Cog):
 				await ctx.channel.send(strings["errors"]["alreadyLinked"])
 				return
 
-			#If not already verified, verify
-			r = requests.get(endpoints["thm"]["verify"].format(token))
-			username = json.loads(r.text)["username"]
-			r = requests.get(endpoints["thm"]["user"].format(username))
-			points = json.loads(r.text)["points"]
+			#Get requisite variables
+			username = self.api.getTHMProfile(token)
+			points = self.api.getTHMPoints(username)
 			self.db.addTHMUser(discordID, username, points, token)
 			await ctx.channel.send(strings["success"]["linked"])
 		
 		
+
 		@bot.command(name="htblink", description=formatHelp("htblink", "desc"), usage=formatHelp("htblink", "usage"))
 		async def htblink(ctx, token = None):
-			sess = requests.session()
-			sess.headers = config["reqHeaders"]
+			#Same as the thmlink command from here on out
 			discordID, token = await preprocess(ctx, token)	
 			if not discordID:
 				return
@@ -45,15 +55,13 @@ class Verify(commands.Cog):
 				await ctx.channel.send(strings["errors"]["alreadyLinked"])
 				return
 
-			#Verify the user
-			r = sess.get(endpoints["htb"]["verify"].format(token))
-			data = json.loads(r.text)
-			username = data["user_name"]
-			userid = data["user_id"]
-			#Get the points
-			r = sess.get(endpoints["htb"]["points"].format(userid))
-			soup = bs4(r.text, 'html.parser')
-			points = soup.find('span', {"title":"Points"}).get_text().strip()
+			username, userid = self.api.getHTBProfile(token)
+			points = self.api.getHTBPoints(userid)
+			#If it wasn't possible to retrieve points then the user hasn't set their HTB profile to public. Yes, this is a shitty way to scrape points, but HTB haven't bothered publishing API docs
+			#and I already called in my favours to get the user endpoint ¯\_(ツ)_/¯
+			if(points == None):
+				await ctx.channel.send(strings["errors"]["profileNotPublic"])
+				return
 			self.db.addHTBUser(discordID, username, userid, points, token)
 			await ctx.channel.send(strings["success"]["linked"])
 
@@ -74,10 +82,10 @@ class Verify(commands.Cog):
 
 		async def preprocess(ctx, token):
 			if not await checkDM(ctx):
-				return False
+				return False, False
 			elif not token:
 				await ctx.channel.send(strings["errors"]["noToken"])
-				return False
+				return False, False
 			discordID = ctx.message.author.id
 			token = stripToken(token)
 			return discordID, token

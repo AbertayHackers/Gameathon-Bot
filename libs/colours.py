@@ -1,3 +1,11 @@
+"""
+Title:			Colours
+Type:			Helper Class
+Purpose:		Pretty colours for the terminal!
+Author: 		AG | MuirlandOracle
+Last Updated:	24/02/21
+
+"""
 import sys
 
 class Colours():

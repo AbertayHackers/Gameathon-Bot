@@ -4,12 +4,12 @@
 	"cogs":[
 		"cogs.misc",
 		"cogs.verify",
+		"cogs.points",
 		"cogs.contributors"
 	],
 	"db":{
 		"path":"records/DATE-gameathon.sqlite",
-		"tableName":"users",
-		"dbUserRows":{
+		"dbUserCols":{
 			"discordID":"TEXT PRIMARY KEY",
 			"thmUser":"TEXT UNIQUE",
 			"thmToken":"TEXT UNIQUE",
@@ -18,9 +18,20 @@
 			"htbUser":"TEXT UNIQUE",
 			"htbToken":"TEXT UNIQUE",
 			"htbPoints":"INT",
-			"points":"INT DEFAULT 0"
+			"points":"INT DEFAULT 0",
+			"lastLeaderboard":"INT DEFAULT 0"
 		}
 	},
+	"logs":{
+		"path":"logs/DATE-gameathon.log"	
+	},
+	"leaderboard":{
+		"limit":5,
+		"cooldown":120
+	},
+	"admins" : [
+		650476435269484549
+	],
 	"github":"https://github.com/MuirlandOracle/Gameathon-Bot",
 	"reqHeaders": {
 		"User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:85.0) Gecko/20100101 Firefox/85.0"

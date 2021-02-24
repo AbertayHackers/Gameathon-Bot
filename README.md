@@ -27,3 +27,4 @@ If you wish to contribute to the bot's development, please fork the repository a
 
 ## Future Upgrades
  - [ ] Multi-language support
+ - [ ] Switch to an activation module where an admin activates / deactivates the bot (rather than literally starting and stopping it)

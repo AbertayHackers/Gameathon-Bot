@@ -23,11 +23,21 @@
 		"github":{
 			"desc":"Display a link to the bot Github repo",
 			"usage":"{}github"
+		},
+		"leaderboard":{
+			"desc":"Display a leaderboard of the top 10 ranked users",
+			"usage":"{}leaderboard"
+		},
+		"points":{
+			"desc":"Display your current points",
+			"usage": "{}points"
 		}
 	},
+	"points":"```User: {}\nPoints: {}```",
 	"help":{
 		"title":"**__Help:__**",
-		"overview":"Welcome to the Gameathon Hacking section!\nThis bot records your points from TryHackMe and HackTheBox, should you choose to link your accounts.\nUse the `thmlink` and `htblink` commands with your account identifiers for each site to track your points!"
+		"overview":"Welcome to the Gameathon Hacking section!\nThis bot records your points from TryHackMe and HackTheBox, should you choose to link your accounts.\nUse the `thmlink` and `htblink` commands with your account identifiers for each site to track your points!",
+		"helpHelp" : "Use `{}help COMMAND` for more information about individual commands"
 	},
 	"errors":{
 		"noDM":"Please send that message to the bot in a DM!",
@@ -35,7 +45,10 @@
 		"noToken":"You have not added your token after the command.",
 		"alreadyLinked":"You have already linked your account for this site",
 		"failedLink":"Something went wrong. Your account has not been linked",
-		"commandNotFound":"Command: `{}` not found"
+		"commandNotFound":"Command: `{}` not found",
+		"profileNotPublic":"Failed to retrieve your points -- is your profile set to public?",
+		"dbConnectFail":"Failed to connect to the database. Make sure that the records directory is writeable",
+		"leaderboardCooldown":"You can only use the `{}leaderboard` command once every {} minutes"
 	},
 	"success":{
 		"linked":"Your account for this site is now linked!"
