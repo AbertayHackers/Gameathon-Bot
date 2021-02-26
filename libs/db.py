@@ -104,7 +104,10 @@ class DBHandle():
 	#Get all user IDs
 	def getUserIDs(self):
 		try:
-			return list(self.conn.execute("SELECT discordID FROM users").fetchall()[0])
+			ids = []
+			for i in self.conn.execute("SELECT discordID FROM users").fetchall():
+				ids.append(i[0])
+			return ids
 		except:
 			return False
 
