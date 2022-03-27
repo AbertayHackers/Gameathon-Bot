@@ -48,7 +48,8 @@
 		"commandNotFound":"Command: `{}` not found",
 		"profileNotPublic":"Failed to retrieve your points -- is your profile set to public?",
 		"dbConnectFail":"Failed to connect to the database. Make sure that the records directory is writeable",
-		"leaderboardCooldown":"You can only use the `{}leaderboard` command once every {} minutes"
+		"leaderboardCooldown":"You can only use the `{}leaderboard` command once every {} minutes",
+        "invalidToken":"That token does not exist"
 	},
 	"success":{
 		"linked":"Your account for this site is now linked!"

@@ -1,10 +1,10 @@
 {
 	"thm":{
 		"verify":"https://tryhackme.com/tokens/discord/{}",
-		"user":"https://tryhackme.com/api/user/{}"
+		"user":"https://tryhackme.com/api/discord/user/{}"
 	},
 	"htb":{
 		"verify":"https://www.hackthebox.eu/api/users/identifier/{}",
-		"points":"https://www.hackthebox.eu/profile/{}"
+		"points":"https://www.hackthebox.com/api/v4/profile/{}"
 	}
 }
