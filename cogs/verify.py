@@ -65,7 +65,7 @@ class Verify(commands.Cog):
             points = self.api.getHTBPoints(userid)
             #If it wasn't possible to retrieve points then the user hasn't set their HTB profile to public. Yes, this is a shitty way to scrape points, but HTB haven't bothered publishing API docs
             #and I already called in my favours to get the user endpoint ¯\_(ツ)_/¯
-            if(not points):
+            if(points == None):
                 await ctx.channel.send(strings["errors"]["profileNotPublic"])
                 return
             self.db.addHTBUser(discordID, username, userid, points, token)
